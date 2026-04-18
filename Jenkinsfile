@@ -1,17 +1,14 @@
 pipeline {
 
-    // Runs directly on your Windows PC (the built-in Jenkins agent)
     agent any
 
     environment {
-        // Override these at pipeline level if needed
-        BASE_URL  = 'https://mhdhasan.netlify.app/'
-        BROWSER   = 'chrome'
-        HEADLESS  = 'true'
+        BASE_URL = 'https://mhdhasan.netlify.app/'
+        BROWSER  = 'chrome'
+        HEADLESS = 'true'
     }
 
     options {
-        // Keep the last 10 builds, timeout the whole run after 30 min
         buildDiscarder(logRotator(numToKeepStr: '10'))
         timeout(time: 30, unit: 'MINUTES')
         timestamps()
@@ -53,24 +50,31 @@ pipeline {
     post {
 
         always {
-            echo "Publishing Cucumber report..."
-            cucumber(
-                fileIncludePattern: '**/cucumber.json',
-                jsonReportDirectory: 'test-automation/build/cucumber-reports',
-                reportTitle: 'Portfolio E2E Test Report'
+            echo "Archiving test reports..."
+
+            // Publish JUnit XML so Jenkins shows pass/fail counts natively
+            junit(
+                testResults: 'test-automation/build/cucumber-reports/cucumber.xml',
+                allowEmptyResults: true
+            )
+
+            // Archive the full HTML + JSON reports as downloadable artefacts
+            archiveArtifacts(
+                artifacts: 'test-automation/build/cucumber-reports/**',
+                allowEmptyArchive: true,
+                fingerprint: true
             )
         }
 
         success {
-            echo "All tests passed!"
+            echo "✅ All tests passed!"
         }
 
         failure {
-            echo "Tests failed — check the Cucumber report for screenshots."
+            echo "❌ Tests failed — download cucumber-reports artefact for screenshots."
         }
 
         cleanup {
-            // Free workspace disk space after each run
             cleanWs()
         }
     }

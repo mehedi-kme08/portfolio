@@ -42,5 +42,8 @@ geckodriver*
 test-automation/bin/
 *.tmp.*
 
+# Allow the Gradle wrapper JAR (needed by CI to bootstrap Gradle)
+!test-automation/gradle/wrapper/gradle-wrapper.jar
+
 # ─── Scratch / helper scripts not part of the project ────────────────────────
 response.py
