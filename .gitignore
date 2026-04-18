@@ -1,0 +1,46 @@
+# ─── Python virtualenv ────────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# ─── Gradle / Java build artefacts ───────────────────────────────────────────
+test-automation/.gradle/
+test-automation/build/
+test-automation/smoke_results*.txt
+test-automation/full_results*.txt
+*.class
+*.jar
+
+# ─── IDE ─────────────────────────────────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+*.suo
+*.user
+
+# ─── OS ──────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── WebDriver / Selenium cache ──────────────────────────────────────────────
+.cache/
+chromedriver*
+geckodriver*
+
+# ─── Claude Code internal settings ───────────────────────────────────────────
+.claude/
+
+# ─── Compiled class output (Gradle/Eclipse bin folders) ──────────────────────
+test-automation/bin/
+*.tmp.*
+
+# ─── Scratch / helper scripts not part of the project ────────────────────────
+response.py

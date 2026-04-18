@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Md Mehedi Hasan — Senior SDET</title>
+  <meta name="description" content="Senior SDET with 5+ years building Python-based test automation platforms and CI/CD pipelines at General Motors." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #050b18;
+      --bg2:       #080f20;
+      --surface:   rgba(255,255,255,0.04);
+      --border:    rgba(255,255,255,0.08);
+      --accent:    #00d4ff;
+      --accent2:   #7c3aed;
+      --accent3:   #06ffa5;
+      --text:      #e2e8f0;
+      --muted:     #64748b;
+      --heading:   #f8fafc;
+      --card-glow: rgba(0,212,255,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    #canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0; opacity: 0.35;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5%;
+      backdrop-filter: blur(20px);
+      background: rgba(5,11,24,0.88);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.3s;
+    }
+    nav.scrolled { padding: 0.65rem 5%; }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.65rem;
+      text-decoration: none;
+    }
+    .nav-logo-img {
+      width: 34px; height: 34px; border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+    }
+    .nav-logo-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem; font-weight: 700;
+      color: var(--accent);
+    }
+    .nav-logo-text span { color: var(--text); }
+
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.875rem; font-weight: 500;
+      transition: color 0.2s; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute;
+      bottom: -4px; left: 0; width: 0; height: 2px;
+      background: var(--accent); transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      background: var(--accent); color: var(--bg) !important;
+      padding: 0.45rem 1.1rem; border-radius: 6px; font-weight: 600 !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: #00b8d9 !important; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 25px; height: 2px; background: var(--text); transition: all 0.3s; }
+
+    section { position: relative; z-index: 1; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 5%; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; font-weight: 500;
+      color: var(--accent); letter-spacing: 3px;
+      text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 800; color: var(--heading);
+      line-height: 1.15; margin-bottom: 1rem;
+    }
+    .section-title span { color: var(--accent); }
+    .section-desc {
+      color: var(--muted); max-width: 560px;
+      font-size: 1.05rem; margin-bottom: 3.5rem;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 7rem 5% 5rem;
+    }
+    .hero-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 400px;
+      gap: 4rem; align-items: center; width: 100%;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(0,212,255,0.1);
+      border: 1px solid rgba(0,212,255,0.25);
+      padding: 0.35rem 0.9rem; border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent3); animation: pulse 2s infinite;
+    }
+
+    .hero-name {
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 900; color: var(--heading);
+      line-height: 1.05; margin-bottom: 0.5rem; letter-spacing: -1px;
+    }
+    .hero-title {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-weight: 400; color: var(--muted); margin-bottom: 1.5rem;
+    }
+    #typed-text { color: var(--accent); font-weight: 600; }
+    .cursor { animation: blink 1s infinite; }
+
+    .hero-summary {
+      color: var(--muted); font-size: 1.05rem;
+      line-height: 1.75; margin-bottom: 2rem; max-width: 540px;
+    }
+    .hero-summary strong { color: var(--text); }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 1.75rem; border-radius: 8px;
+      font-weight: 600; font-size: 0.95rem;
+      text-decoration: none; cursor: pointer;
+      transition: all 0.25s; border: none; font-family: inherit;
+    }
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-primary:hover { background: #00b8d9; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,212,255,0.35); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    .hero-stats { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: var(--heading); line-height: 1; }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+    /* Hero card */
+    .hero-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 60px var(--card-glow);
+      position: relative; overflow: hidden;
+      animation: float 6s ease-in-out infinite;
+    }
+    .hero-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    }
+
+    /* Profile photo */
+    .hc-photo-wrap {
+      position: relative; width: 96px; height: 96px;
+      margin-bottom: 1.25rem;
+    }
+    .hc-photo {
+      width: 96px; height: 96px; border-radius: 50%;
+      object-fit: cover; object-position: center top;
+      border: 3px solid transparent;
+      background: linear-gradient(var(--bg2), var(--bg2)) padding-box,
+                  linear-gradient(135deg, var(--accent), var(--accent2)) border-box;
+      display: block;
+    }
+    .hc-photo-ring {
+      position: absolute; inset: -5px; border-radius: 50%;
+      border: 1px solid rgba(0,212,255,0.25);
+      animation: spin-slow 8s linear infinite;
+    }
+    .hc-photo-dot {
+      position: absolute; bottom: 4px; right: 4px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--accent3);
+      border: 2px solid var(--bg2);
+    }
+
+    .hc-name { font-size: 1.15rem; font-weight: 700; color: var(--heading); }
+    .hc-role { font-size: 0.82rem; color: var(--accent); margin-bottom: 0.6rem; font-family: 'JetBrains Mono', monospace; }
+    .hc-connections {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.75rem; color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .hc-connections strong { color: var(--accent3); }
+
+    .hc-info { display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1.25rem; }
+    .hc-info-row {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 0.82rem; color: var(--muted);
+    }
+    .hc-info-row svg { flex-shrink: 0; color: var(--accent); }
+
+    .hc-divider {
+      height: 1px; background: var(--border); margin-bottom: 1rem;
+    }
+
+    .hc-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+    .hc-tag {
+      background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);
+      color: var(--accent); padding: 0.2rem 0.65rem; border-radius: 100px;
+      font-size: 0.72rem; font-weight: 500; font-family: 'JetBrains Mono', monospace;
+    }
+
+    .hc-langs { display: flex; gap: 0.5rem; margin-top: 0.25rem; }
+    .hc-lang {
+      font-size: 0.72rem; color: var(--muted);
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      padding: 0.2rem 0.6rem; border-radius: 6px;
+    }
+    .hc-lang strong { color: var(--text); }
+
+    /* ── ABOUT ── */
+    #about { padding: 7rem 5%; }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: start;
+    }
+    .about-text p {
+      color: var(--muted); font-size: 1.05rem;
+      line-height: 1.8; margin-bottom: 1.25rem;
+    }
+    .about-text p strong { color: var(--text); }
+    .about-highlights { display: flex; flex-direction: column; gap: 1rem; }
+    .highlight-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.25rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: all 0.3s;
+    }
+    .highlight-card:hover {
+      border-color: rgba(0,212,255,0.3);
+      background: rgba(0,212,255,0.05); transform: translateX(6px);
+    }
+    .hl-icon {
+      width: 42px; height: 42px; flex-shrink: 0; border-radius: 10px;
+      background: rgba(0,212,255,0.12);
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    }
+    .hl-title { font-size: 0.95rem; font-weight: 600; color: var(--heading); margin-bottom: 0.2rem; }
+    .hl-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── SKILLS ── */
+    #skills { padding: 7rem 5%; background: var(--bg2); }
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;
+    }
+    .skill-category {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.75rem; transition: all 0.3s;
+    }
+    .skill-category:hover {
+      border-color: rgba(0,212,255,0.25); box-shadow: 0 0 40px var(--card-glow);
+    }
+    .sc-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+    .sc-icon {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(124,58,237,0.15));
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+    }
+    .sc-title { font-size: 0.95rem; font-weight: 700; color: var(--heading); }
+    .skill-bars { display: flex; flex-direction: column; gap: 0.85rem; }
+    .sb-header { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.35rem; }
+    .sb-name { color: var(--text); font-weight: 500; }
+    .sb-pct { color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+    .sb-track { height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+    .sb-fill {
+      height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      width: 0; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag {
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      color: var(--muted); padding: 0.3rem 0.8rem; border-radius: 6px;
+      font-size: 0.78rem; font-weight: 500; font-family: 'JetBrains Mono', monospace;
+      transition: all 0.2s;
+    }
+    .skill-tag:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,0.08); }
+
+    /* ── EXPERIENCE ── */
+    #experience { padding: 7rem 5%; }
+    .timeline { position: relative; }
+    .timeline::before {
+      content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 2px;
+      background: linear-gradient(180deg, var(--accent), var(--accent2), transparent);
+    }
+    .tl-item {
+      display: flex; gap: 2rem; margin-bottom: 2.5rem;
+      opacity: 0; transform: translateX(-20px); transition: all 0.6s;
+    }
+    .tl-item.visible { opacity: 1; transform: translateX(0); }
+    .tl-dot {
+      flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%;
+      background: var(--bg); border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1; font-size: 1rem;
+    }
+    .tl-dot.current { background: var(--accent); box-shadow: 0 0 20px rgba(0,212,255,0.5); }
+    .tl-content {
+      flex: 1; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.75rem; transition: all 0.3s;
+    }
+    .tl-content:hover { border-color: rgba(0,212,255,0.25); box-shadow: 0 0 40px var(--card-glow); }
+    .tl-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+    .tl-period {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent);
+      background: rgba(0,212,255,0.1); padding: 0.2rem 0.7rem; border-radius: 100px;
+    }
+    .tl-badge {
+      font-size: 0.72rem; color: var(--accent3);
+      background: rgba(6,255,165,0.1); border: 1px solid rgba(6,255,165,0.2);
+      padding: 0.2rem 0.7rem; border-radius: 100px; font-weight: 600;
+    }
+    .tl-role { font-size: 1.1rem; font-weight: 700; color: var(--heading); margin-bottom: 0.2rem; }
+    .tl-company { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.4rem; }
+    .tl-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .tl-bullets li { font-size: 0.875rem; color: var(--muted); line-height: 1.6; display: flex; gap: 0.6rem; }
+    .tl-bullets li::before { content: '▸'; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+
+    /* ── ACHIEVEMENTS ── */
+    #achievements { padding: 7rem 5%; background: var(--bg2); }
+    .ach-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+    .ach-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.75rem;
+      position: relative; overflow: hidden;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.6s, transform 0.6s, border-color 0.3s, box-shadow 0.3s;
+    }
+    .ach-card.visible { opacity: 1; transform: translateY(0); }
+    .ach-card:hover { border-color: rgba(0,212,255,0.3); box-shadow: 0 0 40px var(--card-glow); transform: translateY(-4px); }
+    .ach-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0); transition: transform 0.3s; transform-origin: left;
+    }
+    .ach-card:hover::after { transform: scaleX(1); }
+    .ach-num { font-size: 2.5rem; font-weight: 900; color: var(--accent); line-height: 1; font-family: 'JetBrains Mono', monospace; margin-bottom: 0.5rem; }
+    .ach-title { font-size: 1rem; font-weight: 600; color: var(--heading); margin-bottom: 0.5rem; }
+    .ach-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── EDUCATION ── */
+    #education { padding: 7rem 5%; }
+    .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .edu-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.75rem; transition: all 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .edu-card::before {
+      content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+    }
+    .edu-card:hover { border-color: rgba(0,212,255,0.25); box-shadow: 0 0 40px var(--card-glow); transform: translateY(-3px); }
+    .edu-degree { font-size: 1rem; font-weight: 700; color: var(--heading); margin-bottom: 0.3rem; }
+    .edu-field { font-size: 0.9rem; color: var(--accent); margin-bottom: 0.5rem; }
+    .edu-school { font-size: 0.875rem; color: var(--text); margin-bottom: 0.35rem; }
+    .edu-year { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .edu-gpa {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.78rem; font-family: 'JetBrains Mono', monospace;
+      color: var(--accent3);
+      background: rgba(6,255,165,0.08); border: 1px solid rgba(6,255,165,0.2);
+      padding: 0.2rem 0.6rem; border-radius: 100px; margin-bottom: 0.75rem;
+    }
+    .edu-activities { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+    .edu-activities strong { color: var(--text); display: block; margin-bottom: 0.2rem; }
+
+    .creds-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+
+    /* ── PUBLICATIONS ── */
+    #publications { padding: 7rem 5%; background: var(--bg2); }
+    .pub-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .pub-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem;
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      transition: all 0.3s; opacity: 0; transform: translateY(16px);
+      transition: opacity 0.6s, transform 0.6s, border-color 0.3s;
+    }
+    .pub-card.visible { opacity: 1; transform: translateY(0); }
+    .pub-card:hover { border-color: rgba(0,212,255,0.3); box-shadow: 0 0 40px var(--card-glow); }
+    .pub-num {
+      flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px;
+      background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(124,58,237,0.15));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 1rem;
+      font-weight: 700; color: var(--accent);
+    }
+    .pub-title { font-size: 0.95rem; font-weight: 600; color: var(--heading); margin-bottom: 0.3rem; line-height: 1.45; }
+    .pub-journal { font-size: 0.82rem; color: var(--accent); margin-bottom: 0.25rem; }
+    .pub-date { font-size: 0.78rem; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* ── CONTACT ── */
+    #contact { padding: 7rem 5%; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem 1.25rem;
+      text-decoration: none; transition: all 0.25s;
+    }
+    .contact-link:hover { border-color: rgba(0,212,255,0.35); background: rgba(0,212,255,0.05); transform: translateX(6px); }
+    .cl-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: rgba(0,212,255,0.12);
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+    }
+    .cl-label { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.1rem; }
+    .cl-value { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.82rem; color: var(--muted); font-weight: 500; }
+    .form-group input, .form-group textarea {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.85rem 1rem;
+      color: var(--text); font-family: 'Inter', sans-serif;
+      font-size: 0.9rem; outline: none; transition: border-color 0.25s; resize: vertical;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+    }
+    .form-group textarea { min-height: 130px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 2rem 5%; display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy { font-size: 0.82rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.82rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.85); } }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s, transform 0.7s; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-card { display: none; }
+      .about-grid, .edu-grid, .contact-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: fixed; top: 60px; left: 0; right: 0;
+        background: rgba(5,11,24,0.98); padding: 1.5rem 5%; gap: 1.25rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .hamburger { display: flex; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.25rem; }
+      .creds-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">
+    <img src="Md Mehedi Hasan.jpg" alt="Mehedi" class="nav-logo-img" />
+    <span class="nav-logo-text">MH<span>.</span></span>
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#publications">Research</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Available for Senior / Lead SDET Roles
+      </div>
+      <h1 class="hero-name">Md Mehedi<br>Hasan</h1>
+      <p class="hero-title">
+        <span id="typed-text"></span><span class="cursor">|</span>
+      </p>
+      <p class="hero-summary">
+        Senior SDET with <strong>5+ years</strong> building and scaling Python-based test automation
+        platforms and CI/CD pipelines. Currently at <strong>General Motors</strong>, driving quality
+        engineering across multiple teams with measurable impact. <strong>IEEE Member</strong> · <strong>DFSS Black Belt</strong>.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          Get In Touch
+        </a>
+        <a href="https://linkedin.com/in/mehedihasan91" target="_blank" rel="noopener" class="btn btn-ghost">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn Profile
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">5<span>+</span></div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">5<span>+</span></div>
+          <div class="stat-label">Teams Supported</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">500<span>+</span></div>
+          <div class="stat-label">Connections</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">2</div>
+          <div class="stat-label">Publications</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating card with real photo -->
+    <div class="hero-card">
+      <div class="hc-photo-wrap">
+        <img src="Md Mehedi Hasan.jpg" alt="Md Mehedi Hasan" class="hc-photo" />
+        <div class="hc-photo-ring"></div>
+        <div class="hc-photo-dot"></div>
+      </div>
+      <div class="hc-name">Md Mehedi Hasan</div>
+      <div class="hc-role">// Senior SDET · General Motors</div>
+      <div class="hc-connections">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <strong>500+</strong> connections · <strong>903</strong> followers
+      </div>
+      <div class="hc-info">
+        <div class="hc-info-row">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          United States (Remote)
+        </div>
+        <div class="hc-info-row">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+          mhasan.kme@gmail.com
+        </div>
+        <div class="hc-info-row">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.86-1.86a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          (248) 861-9788
+        </div>
+      </div>
+      <div class="hc-divider"></div>
+      <div class="hc-tags">
+        <span class="hc-tag">Python</span>
+        <span class="hc-tag">SDET</span>
+        <span class="hc-tag">CI/CD</span>
+        <span class="hc-tag">Docker</span>
+        <span class="hc-tag">AWS</span>
+        <span class="hc-tag">Jenkins</span>
+        <span class="hc-tag">IEEE</span>
+      </div>
+      <div class="hc-langs">
+        <span class="hc-lang"><strong>English</strong> — Professional</span>
+        <span class="hc-lang"><strong>Bengali</strong> — Native</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">About Me</div>
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <h2 class="section-title">Building <span>quality</span> at scale</h2>
+        <p>
+          I'm a <strong>Senior Software Development Engineer in Test (SDET)</strong> passionate about
+          building automation ecosystems that don't just find bugs — they prevent them.
+          I treat test infrastructure as a product, with real users (developers), real SLAs, and real ROI.
+        </p>
+        <p>
+          At <strong>General Motors</strong>, I own and scale a Python-based automation platform serving
+          5+ engineering teams — designing pipelines, driving adoption, and continuously improving
+          quality gates that ship safer software faster.
+        </p>
+        <p>
+          My background spans automotive embedded systems (Stellantis), power electronics research
+          (Georgia Southern), and dual engineering degrees — giving me a rare blend of
+          hardware intuition and modern software engineering discipline.
+        </p>
+        <p>
+          I'm a <strong>U.S. citizen</strong>, fully remote-ready, hold <strong>DFSS Green &amp; Black Belt</strong>
+          certifications, and am an active <strong>IEEE Member</strong> and <strong>Bangladesh Engineers Association</strong> member.
+          Fluent in <strong>English</strong> (professional) and <strong>Bengali</strong> (native).
+        </p>
+      </div>
+      <div class="about-highlights fade-in">
+        <div class="highlight-card">
+          <div class="hl-icon">🏗️</div>
+          <div>
+            <div class="hl-title">Framework Ownership</div>
+            <div class="hl-desc">Primary technical point of contact for shared automation tooling. Drive adoption, troubleshooting, and continuous improvement across teams.</div>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="hl-icon">🚀</div>
+          <div>
+            <div class="hl-title">CI/CD Engineering</div>
+            <div class="hl-desc">Design and maintain Jenkins &amp; GitHub Actions pipelines for automated execution, real-time reporting, and release validation.</div>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="hl-icon">🐳</div>
+          <div>
+            <div class="hl-title">Infrastructure as Code</div>
+            <div class="hl-desc">Automated environment provisioning using Docker and Ansible, eliminating manual setup and ensuring consistency across test environments.</div>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="hl-icon">🔬</div>
+          <div>
+            <div class="hl-title">Research &amp; Publications</div>
+            <div class="hl-desc">Published 2 peer-reviewed research papers on wind turbine aerodynamics and energy systems in international engineering journals.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label fade-in">Technical Stack</div>
+    <h2 class="section-title fade-in">Skills &amp; <span>Expertise</span></h2>
+    <p class="section-desc fade-in">A deep and broad toolkit — from test frameworks to cloud platforms to DevOps tooling.</p>
+    <div class="skills-grid">
+
+      <div class="skill-category fade-in">
+        <div class="sc-header">
+          <div class="sc-icon">🐍</div>
+          <div class="sc-title">Languages &amp; Scripting</div>
+        </div>
+        <div class="skill-bars">
+          <div class="skill-bar-item">
+            <div class="sb-header"><span class="sb-name">Python</span><span class="sb-pct">95%</span></div>
+            <div class="sb-track"><div class="sb-fill" data-pct="95"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="sb-header"><span class="sb-name">Java</span><span class="sb-pct">80%</span></div>
+            <div class="sb-track"><div class="sb-fill" data-pct="80"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="sb-header"><span class="sb-name">C / C++</span><span class="sb-pct">70%</span></div>
+            <div class="sb-track"><div class="sb-fill" data-pct="70"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="sb-header"><span class="sb-name">MATLAB / Simulink</span><span class="sb-pct">88%</span></div>
+            <div class="sb-track"><div class="sb-fill" data-pct="88"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-category fade-in">
+        <div class="sc-header">
+          <div class="sc-icon">🧪</div>
+          <div class="sc-title">Test Automation</div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Robot Framework</span>
+          <span class="skill-tag">Selenium</span>
+          <span class="skill-tag">Appium</span>
+          <span class="skill-tag">TestNG</span>
+          <span class="skill-tag">JUnit</span>
+          <span class="skill-tag">Cucumber</span>
+          <span class="skill-tag">Postman</span>
+          <span class="skill-tag">pytest</span>
+          <span class="skill-tag">TDD</span>
+          <span class="skill-tag">BDD</span>
+        </div>
+      </div>
+
+      <div class="skill-category fade-in">
+        <div class="sc-header">
+          <div class="sc-icon">⚙️</div>
+          <div class="sc-title">CI/CD &amp; DevOps</div>
+        </div>
+        <div class="skill-bars">
+          <div class="skill-bar-item">
+            <div class="sb-header"><span class="sb-name">Jenkins</span><span class="sb-pct">92%</span></div>
+            <div class="sb-track"><div class="sb-fill" data-pct="92"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="sb-header"><span class="sb-name">GitHub Actions</span><span class="sb-pct">88%</span></div>
+            <div class="sb-track"><div class="sb-fill" data-pct="88"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="sb-header"><span class="sb-name">Docker</span><span class="sb-pct">85%</span></div>
+            <div class="sb-track"><div class="sb-fill" data-pct="85"></div></div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="sb-header"><span class="sb-name">Ansible / Terraform</span><span class="sb-pct">75%</span></div>
+            <div class="sb-track"><div class="sb-fill" data-pct="75"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-category fade-in">
+        <div class="sc-header">
+          <div class="sc-icon">☁️</div>
+          <div class="sc-title">Cloud, Tools &amp; Methods</div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">AWS</span>
+          <span class="skill-tag">Azure</span>
+          <span class="skill-tag">Kubernetes</span>
+          <span class="skill-tag">Grafana</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">Jira</span>
+          <span class="skill-tag">Puppet</span>
+          <span class="skill-tag">Agile/Scrum</span>
+          <span class="skill-tag">DFSS</span>
+          <span class="skill-tag">Power Electronics</span>
+          <span class="skill-tag">FEA</span>
+          <span class="skill-tag">DSP</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label fade-in">Career Path</div>
+    <h2 class="section-title fade-in">Professional <span>Experience</span></h2>
+    <p class="section-desc fade-in">Over 5 years of progressive responsibility in test automation, DevOps, and embedded software engineering.</p>
+
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-dot current">⚡</div>
+        <div class="tl-content">
+          <div class="tl-meta">
+            <span class="tl-period">Apr 2024 – Present</span>
+            <span class="tl-badge">CURRENT</span>
+          </div>
+          <div class="tl-role">Test Automation Framework Engineer</div>
+          <div class="tl-company">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            General Motors — Warren, MI
+          </div>
+          <ul class="tl-bullets">
+            <li>Own and scale a Python-based test automation platform supporting system and integration testing across multiple engineering teams.</li>
+            <li>Design and maintain Jenkins and GitHub Actions CI/CD pipelines enabling automated test execution, real-time reporting, and release validation.</li>
+            <li>Partner with developers and system engineers to define test strategies and increase automated test coverage across critical components.</li>
+            <li>Author and maintain technical documentation for frameworks and environments, accelerating onboarding for new team members.</li>
+            <li>Lead continuous improvement initiatives improving test execution speed through parallel execution and pipeline optimization.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot">🔧</div>
+        <div class="tl-content">
+          <div class="tl-meta">
+            <span class="tl-period">Sep 2021 – Mar 2024</span>
+          </div>
+          <div class="tl-role">Test Automation Engineer</div>
+          <div class="tl-company">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            General Motors — Milford, MI
+          </div>
+          <ul class="tl-bullets">
+            <li>Built and extended Python-based automated test suites for system and integration testing across multiple product lines.</li>
+            <li>Implemented and maintained Jenkins CI/CD pipelines for scheduled, nightly, and on-demand test execution with automated reporting.</li>
+            <li>Translated system requirements into effective test strategies and automated coverage in collaboration with developers.</li>
+            <li>Diagnosed and resolved test failures and infrastructure issues, improving stability and reducing test flakiness over time.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot">🖥️</div>
+        <div class="tl-content">
+          <div class="tl-meta">
+            <span class="tl-period">Aug 2017 – Sep 2021</span>
+          </div>
+          <div class="tl-role">Software Modeling Engineer</div>
+          <div class="tl-company">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            Stellantis North America — Auburn Hills, MI
+          </div>
+          <ul class="tl-bullets">
+            <li>Designed and implemented embedded software components for digital user interfaces and display systems in automotive platforms.</li>
+            <li>Developed model-based software using MATLAB/Simulink and validated quality through automated and manual testing processes.</li>
+            <li>Collaborated cross-functionally with product, design, and quality teams to deliver reliable, user-facing software features.</li>
+            <li>Performed functional validation, debugging, and performance analysis to ensure software stability prior to production release.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot">🎓</div>
+        <div class="tl-content">
+          <div class="tl-meta">
+            <span class="tl-period">Aug 2015 – May 2017</span>
+          </div>
+          <div class="tl-role">Graduate Research Assistant</div>
+          <div class="tl-company">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Georgia Southern University — Statesboro, GA
+          </div>
+          <ul class="tl-bullets">
+            <li>Conducted research in power electronics and distributed energy systems.</li>
+            <li>Developed simulation models and optimization algorithms using MATLAB and Simulink.</li>
+            <li>Published 2 peer-reviewed research papers in international engineering journals.</li>
+            <li>Served as IEEE Member and Global Ambassador; supported undergraduate instruction and lab experimentation.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="container">
+    <div class="section-label fade-in">Impact</div>
+    <h2 class="section-title fade-in">Key <span>Achievements</span></h2>
+    <p class="section-desc fade-in">Measurable results delivered through automation, infrastructure, and cross-team collaboration.</p>
+
+    <div class="ach-grid">
+      <div class="ach-card">
+        <div class="ach-num">5+</div>
+        <div class="ach-title">Engineering Teams Supported</div>
+        <div class="ach-desc">Designed and deployed a Python-based test automation platform supporting large-scale system and integration testing across multiple teams.</div>
+      </div>
+      <div class="ach-card">
+        <div class="ach-num">↑∞</div>
+        <div class="ach-title">Accelerated Release Velocity</div>
+        <div class="ach-desc">Optimized CI/CD pipelines and enabled parallel test execution using Jenkins and GitHub Actions, accelerating validation and improving developer feedback speed.</div>
+      </div>
+      <div class="ach-card">
+        <div class="ach-num">0</div>
+        <div class="ach-title">Manual Env Setup Steps</div>
+        <div class="ach-desc">Automated environment provisioning using Docker and Ansible — fully eliminated manual setup and increased consistency across all test environments.</div>
+      </div>
+      <div class="ach-card">
+        <div class="ach-num">#1</div>
+        <div class="ach-title">Framework Owner</div>
+        <div class="ach-desc">Served as primary technical point of contact for shared automation tooling, driving adoption and continuous improvement across GM engineering.</div>
+      </div>
+      <div class="ach-card">
+        <div class="ach-num">2</div>
+        <div class="ach-title">Research Publications</div>
+        <div class="ach-desc">Published peer-reviewed papers on wind turbine aerodynamics in international engineering journals, contributing to renewable energy research.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <div class="section-label fade-in">Academic Background</div>
+    <h2 class="section-title fade-in">Education &amp; <span>Credentials</span></h2>
+    <p class="section-desc fade-in">Dual-discipline engineering education spanning electrical and mechanical systems.</p>
+
+    <div class="edu-grid">
+      <div class="edu-card fade-in">
+        <div class="edu-degree">Master of Science (M.S.)</div>
+        <div class="edu-field">Electrical Engineering</div>
+        <div class="edu-school">Georgia Southern University — Statesboro, GA</div>
+        <div class="edu-year">May 2017</div>
+<div class="edu-activities">
+          <strong>Activities &amp; Memberships</strong>
+          IEEE Member · Global Ambassador · South Asian Organization ·
+          Advanced Digital Signal Processing · Power Electronics · Finite Element Analysis · Renewable Energy Systems
+        </div>
+      </div>
+      <div class="edu-card fade-in">
+        <div class="edu-degree">Bachelor of Science (B.S.)</div>
+        <div class="edu-field">Mechanical Engineering</div>
+        <div class="edu-school">Khulna University of Engineering &amp; Technology (KUET), Bangladesh</div>
+        <div class="edu-year">November 2013</div>
+        <div class="edu-activities">
+          <strong>Focus Areas</strong>
+          Thermodynamics · Fluid Mechanics · Manufacturing · Structural Analysis ·
+          Bangladesh Engineers Association (BEA) Member
+        </div>
+      </div>
+    </div>
+
+    <!-- Certifications & Memberships -->
+    <div class="creds-row fade-in">
+      <div class="highlight-card" style="flex:1; min-width:200px;">
+        <div class="hl-icon">🏅</div>
+        <div>
+          <div class="hl-title">DFSS Green Belt</div>
+          <div class="hl-desc">Design for Six Sigma — quality methodology</div>
+        </div>
+      </div>
+      <div class="highlight-card" style="flex:1; min-width:200px;">
+        <div class="hl-icon">🥋</div>
+        <div>
+          <div class="hl-title">DFSS Black Belt</div>
+          <div class="hl-desc">Advanced quality engineering &amp; process optimization</div>
+        </div>
+      </div>
+      <div class="highlight-card" style="flex:1; min-width:200px;">
+        <div class="hl-icon">⚡</div>
+        <div>
+          <div class="hl-title">IEEE Member</div>
+          <div class="hl-desc">Institute of Electrical &amp; Electronics Engineers — May 2017–Present</div>
+        </div>
+      </div>
+      <div class="highlight-card" style="flex:1; min-width:200px;">
+        <div class="hl-icon">🌍</div>
+        <div>
+          <div class="hl-title">Global Ambassador</div>
+          <div class="hl-desc">Former Global Ambassador, Georgia Southern University, USA</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volunteer -->
+    <div class="creds-row fade-in">
+      <div class="highlight-card" style="flex:1; min-width:200px;">
+        <div class="hl-icon">🚗</div>
+        <div>
+          <div class="hl-title">GM Cares Volunteer</div>
+          <div class="hl-desc">Environment &amp; community volunteer at General Motors — Sep 2023–Present</div>
+        </div>
+      </div>
+      <div class="highlight-card" style="flex:1; min-width:200px;">
+        <div class="hl-icon">🤝</div>
+        <div>
+          <div class="hl-title">Humanitarian Aid</div>
+          <div class="hl-desc">Coast Trust Bangladesh — Disaster relief &amp; humanitarian assistance (2007)</div>
+        </div>
+      </div>
+      <div class="highlight-card" style="flex:1; min-width:200px;">
+        <div class="hl-icon">🏗️</div>
+        <div>
+          <div class="hl-title">Bangladesh Engineers Assoc.</div>
+          <div class="hl-desc">Active member — Bangladesh Engineers Association, Jan 2015–Present</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="container">
+    <div class="section-label fade-in">Research</div>
+    <h2 class="section-title fade-in">Published <span>Research</span></h2>
+    <p class="section-desc fade-in">Peer-reviewed contributions to renewable energy engineering and wind turbine aerodynamics.</p>
+
+    <div class="pub-list">
+      <div class="pub-card fade-in">
+        <div class="pub-num">01</div>
+        <div>
+          <div class="pub-title">Performance Investigation of Three Combined Airfoils Bladed Small Scale Horizontal Axis Wind Turbine</div>
+          <div class="pub-journal">Journal of Power and Energy Engineering</div>
+          <div class="pub-date">May 2017</div>
+        </div>
+      </div>
+      <div class="pub-card fade-in">
+        <div class="pub-num">02</div>
+        <div>
+          <div class="pub-title">Design Studies and Aerodynamic Performance Analysis of Small Scale Horizontal Axis Wind Turbine Blade for Nano Grid Application</div>
+          <div class="pub-journal">Journal of Automation &amp; Systems Engineering</div>
+          <div class="pub-date">March 2017</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label fade-in">Let's Connect</div>
+    <h2 class="section-title fade-in">Get In <span>Touch</span></h2>
+    <p class="section-desc fade-in">Open to senior SDET, Lead QA Engineer, and test automation architect opportunities. Let's talk.</p>
+
+    <div class="contact-grid">
+      <div class="contact-info fade-in">
+        <div class="contact-links">
+          <a class="contact-link" href="mailto:mhasan.kme@gmail.com">
+            <div class="cl-icon">✉️</div>
+            <div>
+              <div class="cl-label">Email</div>
+              <div class="cl-value">mhasan.kme@gmail.com</div>
+            </div>
+          </a>
+          <a class="contact-link" href="tel:+12488619788">
+            <div class="cl-icon">📞</div>
+            <div>
+              <div class="cl-label">Phone</div>
+              <div class="cl-value">(248) 861-9788</div>
+            </div>
+          </a>
+          <a class="contact-link" href="https://linkedin.com/in/mehedihasan91" target="_blank" rel="noopener">
+            <div class="cl-icon">💼</div>
+            <div>
+              <div class="cl-label">LinkedIn · 500+ connections</div>
+              <div class="cl-value">linkedin.com/in/mehedihasan91</div>
+            </div>
+          </a>
+          <a class="contact-link" href="#">
+            <div class="cl-icon">📍</div>
+            <div>
+              <div class="cl-label">Location</div>
+              <div class="cl-value">United States — Remote Ready</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <form class="contact-form fade-in" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" placeholder="Jane" required />
+          </div>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" placeholder="Smith" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="jane@company.com" required />
+        </div>
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" placeholder="Job Opportunity / Collaboration" />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="Tell me about the role or project..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2026 Md Mehedi Hasan · Senior SDET · U.S. Citizen</div>
+  <div class="footer-links">
+    <a href="mailto:mhasan.kme@gmail.com">Email</a>
+    <a href="https://linkedin.com/in/mehedihasan91" target="_blank">LinkedIn</a>
+    <a href="#publications">Research</a>
+    <a href="#hero">Back to Top</a>
+  </div>
+</footer>
+
+<script>
+// ── Particle canvas ──
+(function() {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [], W, H;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function rand(a, b) { return Math.random() * (b - a) + a; }
+  for (let i = 0; i < 80; i++) {
+    particles.push({ x: rand(0, innerWidth), y: rand(0, innerHeight), r: rand(0.5, 2), dx: rand(-0.3, 0.3), dy: rand(-0.3, 0.3), alpha: rand(0.2, 0.7) });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,212,255,${p.alpha})`; ctx.fill();
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0 || p.x > W) p.dx *= -1;
+      if (p.y < 0 || p.y > H) p.dy *= -1;
+    });
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        if (d < 120) {
+          ctx.beginPath(); ctx.strokeStyle = `rgba(0,212,255,${0.12*(1-d/120)})`;
+          ctx.lineWidth = 0.5; ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── Typing animation ──
+(function() {
+  const phrases = ['Senior SDET', 'Test Automation Architect', 'CI/CD Pipeline Engineer', 'Python Automation Expert', 'DevOps Quality Engineer', 'IEEE Member &amp; Researcher'];
+  const el = document.getElementById('typed-text');
+  let pi = 0, ci = 0, del = false;
+  function type() {
+    const p = phrases[pi];
+    if (!del) { el.innerHTML = p.slice(0, ++ci); if (ci === p.length) { del = true; setTimeout(type, 1800); return; } }
+    else { el.innerHTML = p.slice(0, --ci); if (ci === 0) { del = false; pi = (pi + 1) % phrases.length; } }
+    setTimeout(type, del ? 50 : 85);
+  }
+  type();
+})();
+
+// ── Nav scroll ──
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', scrollY > 60);
+});
+
+// ── Hamburger ──
+function toggleMenu() { document.getElementById('nav-links').classList.toggle('open'); }
+
+// ── Intersection observer ──
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('.sb-fill').forEach(b => b.style.width = b.dataset.pct + '%');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-in, .tl-item, .ach-card, .pub-card').forEach(el => io.observe(el));
+
+document.querySelectorAll('.skill-category').forEach(el => {
+  const o = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('.sb-fill').forEach(b => b.style.width = b.dataset.pct + '%'); o.unobserve(e.target); } });
+  }, { threshold: 0.2 }); o.observe(el);
+});
+
+// ── Stagger delays ──
+document.querySelectorAll('.tl-item').forEach((el, i) => el.style.transitionDelay = (i * 0.15) + 's');
+document.querySelectorAll('.ach-card').forEach((el, i) => el.style.transitionDelay = (i * 0.1) + 's');
+document.querySelectorAll('.pub-card').forEach((el, i) => el.style.transitionDelay = (i * 0.15) + 's');
+
+// ── Contact form ──
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.textContent = 'Message Sent!';
+  btn.style.background = 'var(--accent3)'; btn.style.color = '#000';
+  setTimeout(() => {
+    btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message';
+    btn.style.background = ''; btn.style.color = ''; e.target.reset();
+  }, 3000);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.portfolio'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+dependencies {
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.27.0'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
+    testImplementation 'io.cucumber:cucumber-java:7.20.1'
+    testImplementation 'io.cucumber:cucumber-junit:7.20.1'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.assertj:assertj-core:3.27.3'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.16'
+}
+
+test {
+    useJUnit()
+    systemProperty 'browser',  System.getProperty('browser',  'chrome')
+    systemProperty 'base.url', System.getProperty('base.url', 'https://mhdhasan.netlify.app/')
+    systemProperty 'headless', System.getProperty('headless', 'false')
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        showStandardStreams = false
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  ./gradlew cucumberTest                          → run all scenarios
+//  ./gradlew cucumberTest -Dtags="@smoke"          → run smoke suite
+//  ./gradlew cucumberTest -Dtags="@contact"        → run contact tests
+//  ./gradlew cucumberTest -Dbrowser=firefox        → run on Firefox
+//  ./gradlew cucumberTest -Dheadless=true          → headless mode
+//  ./gradlew cucumberTest -Dbase.url=http://localhost:5500/index.html
+// ─────────────────────────────────────────────────────────────────────────────
+task cucumberTest(type: JavaExec, dependsOn: testClasses,
+        description: 'Run Cucumber feature tests', group: 'verification') {
+
+    classpath = configurations.cucumberRuntime + sourceSets.test.output + sourceSets.main.output
+    mainClass  = 'io.cucumber.core.cli.Main'
+
+    doFirst {
+        def argsList = [
+            '--plugin', 'pretty',
+            '--plugin', "html:${buildDir}/cucumber-reports/cucumber.html",
+            '--plugin', "json:${buildDir}/cucumber-reports/cucumber.json",
+            '--plugin', "junit:${buildDir}/cucumber-reports/cucumber.xml",
+            '--glue',   'com.portfolio.stepdefs',
+            'src/test/resources/features'
+        ]
+        def tags = System.getProperty('tags', '').trim()
+        if (tags) argsList = ['--tags', tags] + argsList
+        args = argsList
+    }
+
+    systemProperty 'browser',  System.getProperty('browser',  'chrome')
+    systemProperty 'base.url', System.getProperty('base.url', 'https://mhdhasan.netlify.app/')
+    systemProperty 'headless', System.getProperty('headless', 'false')
+}
