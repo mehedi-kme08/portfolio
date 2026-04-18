@@ -71,13 +71,24 @@ public class ContactPage extends BasePage {
     }
 
     public WebElement getSubmitButton()     { return waitForVisible(SUBMIT_BUTTON); }
-    public String  getSubmitButtonText()    { return getSubmitButton().getText().trim(); }
+    public String getSubmitButtonText() {
+        WebElement btn = getSubmitButton();
+        String text = (String) js.executeScript("return arguments[0].textContent;", btn);
+        return text != null ? text.trim() : btn.getText().trim();
+    }
 
-    public void clickSubmit()               { waitForClickable(SUBMIT_BUTTON).click(); }
+    public void clickSubmit() {
+        WebElement btn = waitForClickable(SUBMIT_BUTTON);
+        scrollToElement(btn);
+        pause(300);
+        btn.click();
+    }
 
     public boolean isEmailFieldInvalid() {
+        // reportValidity() triggers browser constraint checking without needing a submit
         return (boolean) js.executeScript(
-            "return !document.getElementById('email').checkValidity();");
+            "var el = document.getElementById('email');" +
+            "return el != null && !el.checkValidity();");
     }
 
     public boolean isSubmitButtonDisabled() {
